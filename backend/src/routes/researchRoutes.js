@@ -1,10 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const { getClinicalTrials, getPubMedData, getOpenAlexData } = require('../controllers/researchController');
+const { getClinicalTrials, getOpenAlexData, getPubMedData } = require('../controllers/researchController'); // getPubMedData add kiya
 
-// Routes define kar rahe hain (Sath mein ?disease=xyz ya ?query=xyz lagana padega)
 router.get('/trials', getClinicalTrials);
-router.get('/pubmed', getPubMedData);
 router.get('/openalex', getOpenAlexData);
+router.get('/pubmed', getPubMedData); 
 
 module.exports = router;
