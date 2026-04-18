@@ -8,7 +8,11 @@ dotenv.config();
 connectDB();
 
 const app = express();
-app.use(cors());
+app.use(cors({
+    origin: 'http://localhost:5173', // Sirf apne frontend ko allow karo
+    methods: ['POST', 'GET'],       // Kaunsi request use karenge
+    credentials: true
+}));
 app.use(express.json());
 
 const PORT = process.env.PORT || 5000;

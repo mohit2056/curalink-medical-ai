@@ -1,184 +1,228 @@
-.counter {
-  font-size: 16px;
-  padding: 5px 10px;
-  border-radius: 5px;
-  color: var(--accent);
-  background: var(--accent-bg);
-  border: 2px solid transparent;
-  transition: border-color 0.3s;
-  margin-bottom: 24px;
-
-  &:hover {
-    border-color: var(--accent-border);
-  }
-  &:focus-visible {
-    outline: 2px solid var(--accent);
-    outline-offset: 2px;
-  }
+body, html {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100vh;
+  
+  /* 🔥 TERA NAYA MEDICAL PATTERN + PINK GRADIENT 🔥 */
+  background-image: 
+    url('./assets/pattern.png'), 
+    linear-gradient(135deg, #ffe6ea 0%, #ffb6c1 100%);
+    
+  background-size: 350px, cover; 
+  background-position: center, center;
+  background-repeat: repeat, no-repeat;
+  
+  /* 🪄 THE REAL MAGIC: Ye white background gayab karke pink me blend kar dega */
+  background-blend-mode: multiply; 
+  
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  overflow: hidden;
 }
 
-.hero {
-  position: relative;
-
-  .base,
-  .framework,
-  .vite {
-    inset-inline: 0;
-    margin: 0 auto;
-  }
-
-  .base {
-    width: 170px;
-    position: relative;
-    z-index: 0;
-  }
-
-  .framework,
-  .vite {
-    position: absolute;
-  }
-
-  .framework {
-    z-index: 1;
-    top: 34px;
-    height: 28px;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(44deg) rotateY(39deg)
-      scale(1.4);
-  }
-
-  .vite {
-    z-index: 0;
-    top: 107px;
-    height: 26px;
-    width: auto;
-    transform: perspective(2000px) rotateZ(300deg) rotateX(40deg) rotateY(39deg)
-      scale(0.8);
-  }
+/* Vite fix for root container - stays centered */
+#root {
+  width: 100%;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-#center {
+/* Glassmorphism Main Container - Pro Look */
+.app-container {
+  width: 95%;
+  max-width: 850px; 
+  height: 85vh; 
+  background: rgba(255, 255, 255, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-radius: 30px; 
+  border: 1px solid rgba(255, 255, 255, 0.7);
+  box-shadow: 0 20px 60px rgba(216, 27, 96, 0.2); 
   display: flex;
   flex-direction: column;
-  gap: 25px;
-  place-content: center;
-  place-items: center;
-  flex-grow: 1;
-
-  @media (max-width: 1024px) {
-    padding: 32px 20px 24px;
-    gap: 18px;
-  }
+  overflow: hidden;
 }
 
-#next-steps {
-  display: flex;
-  border-top: 1px solid var(--border);
-  text-align: left;
-
-  & > div {
-    flex: 1 1 0;
-    padding: 32px;
-    @media (max-width: 1024px) {
-      padding: 24px 20px;
-    }
-  }
-
-  .icon {
-    margin-bottom: 16px;
-    width: 22px;
-    height: 22px;
-  }
-
-  @media (max-width: 1024px) {
-    flex-direction: column;
-    text-align: center;
-  }
+.header {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.6);
 }
 
-#docs {
-  border-right: 1px solid var(--border);
-
-  @media (max-width: 1024px) {
-    border-right: none;
-    border-bottom: 1px solid var(--border);
-  }
+.header h1 {
+  margin: 0;
+  color: #d81b60; 
 }
 
-#next-steps ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 8px;
-  margin: 32px 0 0;
-
-  .logo {
-    height: 18px;
-  }
-
-  a {
-    color: var(--text-h);
-    font-size: 16px;
-    border-radius: 6px;
-    background: var(--social-bg);
-    display: flex;
-    padding: 6px 12px;
-    align-items: center;
-    gap: 8px;
-    text-decoration: none;
-    transition: box-shadow 0.3s;
-
-    &:hover {
-      box-shadow: var(--shadow);
-    }
-    .button-icon {
-      height: 18px;
-      width: 18px;
-    }
-  }
-
-  @media (max-width: 1024px) {
-    margin-top: 20px;
-    flex-wrap: wrap;
-    justify-content: center;
-
-    li {
-      flex: 1 1 calc(50% - 8px);
-    }
-
-    a {
-      width: 100%;
-      justify-content: center;
-      box-sizing: border-box;
-    }
-  }
+.header p {
+  margin: 5px 0 0;
+  color: #ad1457;
+  font-weight: 500;
 }
 
-#spacer {
-  height: 88px;
-  border-top: 1px solid var(--border);
-  @media (max-width: 1024px) {
-    height: 48px;
-  }
+/* 🔥 Naya Main Container for Split View 🔥 */
+.main-content-area {
+  flex: 1; 
+  display: flex; 
+  overflow: hidden; 
+  padding: 10px; 
 }
 
-.ticks {
-  position: relative;
+/* 🔥 LEFT COLUMN: Chat Area Styling 🔥 */
+.chat-box-column {
+  flex: 0 0 65%; 
+  height: 100%;
+  padding-right: 15px; 
+  overflow: hidden; 
+}
+
+.chat-box {
   width: 100%;
+  height: 100%;
+  overflow-y: auto; 
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
 
-  &::before,
-  &::after {
-    content: '';
-    position: absolute;
-    top: -4.5px;
-    border: 5px solid transparent;
-  }
+/* 🔥 RIGHT COLUMN: Fixed Animation Area Styling 🔥 */
+.animation-column {
+  flex: 1; 
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 2px solid rgba(255, 255, 255, 0.5); /* Halki line dono ke beech */
+}
 
-  &::before {
-    left: 0;
-    border-left-color: var(--border);
-  }
-  &::after {
-    right: 0;
-    border-right-color: var(--border);
-  }
+/* Temporary Placeholder for Animation */
+.placeholder-animation {
+  width: 90%;
+  height: 90%;
+  border: 2px dashed #d81b60; 
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.2);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ad1457;
+  text-align: center;
+  font-weight: bold;
+}
+
+.message {
+  padding: 15px 20px;
+  border-radius: 18px;
+  max-width: 80%;
+  line-height: 1.6;
+  font-size: 15px;
+}
+
+.message pre {
+  white-space: pre-wrap;
+  font-family: inherit;
+  margin: 0;
+}
+
+.message.user {
+  align-self: flex-end;
+  background: linear-gradient(135deg, #ff80ab, #f50057);
+  color: white;
+  border-bottom-right-radius: 4px;
+  box-shadow: 0 4px 15px rgba(245, 0, 87, 0.2);
+}
+
+.message.ai {
+  align-self: flex-start;
+  background: rgba(255, 255, 255, 0.85);
+  color: #333;
+  border-bottom-left-radius: 4px;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+}
+
+.input-area {
+  padding: 15px 20px; 
+  display: flex;
+  align-items: center; 
+  gap: 15px; 
+  background: rgba(255, 255, 255, 0.4); 
+  border-top: 1px solid rgba(255, 255, 255, 0.6);
+  border-bottom-left-radius: 24px; 
+  border-bottom-right-radius: 24px;
+}
+
+.input-area input {
+  flex: 1;
+  padding: 14px 20px;
+  border-radius: 25px; 
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  background: rgba(255, 255, 255, 0.7);
+  box-shadow: inset 0 2px 4px rgba(0,0,0,0.05); 
+  outline: none;
+  font-size: 16px;
+  color: #333;
+  transition: all 0.3s ease;
+}
+
+.input-area input:focus {
+  background: rgba(255, 255, 255, 0.95);
+  box-shadow: 0 0 12px rgba(216, 27, 96, 0.2), inset 0 2px 4px rgba(0,0,0,0.02);
+  border-color: rgba(216, 27, 96, 0.4);
+}
+
+/* 🔥 TERA LOGO BUTTON - Size Adjusted 🔥 */
+.logo-btn {
+  width: 48px; 
+  height: 48px;
+  min-width: 48px; 
+  border-radius: 50%; 
+  overflow: hidden; 
+  border: 2px solid rgba(216, 27, 96, 0.6); 
+  cursor: pointer;
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: white; 
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.2);
+  animation: pulse-glow 3s infinite ease-in-out; 
+}
+
+.logo-btn img {
+  width: 110%; 
+  height: 110%;
+  object-fit: cover; 
+}
+
+.logo-btn:hover {
+  transform: scale(1.1) rotate(5deg); 
+  border-color: #d81b60; 
+  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.3);
+}
+
+.logo-btn:active {
+  transform: scale(0.95); 
+}
+
+/* 🔄 LOGO LOADING STATE 🔄 */
+.logo-loading {
+  opacity: 0.7;
+  pointer-events: none; 
+  animation: pulse-glow-fast 0.8s infinite alternate; 
+}
+
+/* Normal Breathing Glow */
+@keyframes pulse-glow {
+  0% { box-shadow: 0 0 5px rgba(216, 27, 96, 0.2); }
+  50% { box-shadow: 0 0 15px rgba(216, 27, 96, 0.6); border-color: rgba(216, 27, 96, 0.8); }
+  100% { box-shadow: 0 0 5px rgba(216, 27, 96, 0.2); }
+}
+
+/* Fast Loading Glow */
+@keyframes pulse-glow-fast {
+  from { box-shadow: 0 0 5px rgba(216, 27, 96, 0.3); transform: scale(0.98); }
+  to { box-shadow: 0 0 25px rgba(216, 27, 96, 0.8); transform: scale(1.02); border-color: #d81b60; }
 }

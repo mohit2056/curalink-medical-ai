@@ -1,121 +1,87 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from './assets/vite.svg'
-import heroImg from './assets/hero.png'
-import './App.css'
+import { useState } from 'react';
+import './App.css';
+import logo from './assets/logo.png'; 
+import MedicalAnimation from './components/MedicalAnimation'; // 🔥 Nayi file import kar li
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [input, setInput] = useState('');
+  const [messages, setMessages] = useState([]);
+  const [loading, setLoading] = useState(false);
+
+  const sendMessage = async () => {
+    if (!input.trim() || loading) return; 
+    
+    const newMessages = [...messages, { role: 'user', content: input }];
+    setMessages(newMessages);
+    setInput('');
+    setLoading(true);
+
+    try {
+      const response = await fetch('http://localhost:5000/api/research/chat', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ message: input })
+    });
+      const data = await response.json();
+      
+      if (data.success) {
+        setMessages([...newMessages, { role: 'ai', content: data.answer }]);
+      } else {
+        setMessages([...newMessages, { role: 'ai', content: "AI is thinking. Wait..." }]);
+      }
+    } catch (error) {
+      console.error(error);
+      setMessages([...newMessages, { role: 'ai', content: "Server connection failed." }]);
+    }
+    setLoading(false);
+  };
 
   return (
-    <>
-      <section id="center">
-        <div className="hero">
-          <img src={heroImg} className="base" width="170" height="179" alt="" />
-          <img src={reactLogo} className="framework" alt="React logo" />
-          <img src={viteLogo} className="vite" alt="Vite logo" />
+    <div className="app-container">
+      <header className="header">
+        <h1>Curalink AI</h1>
+        <p>Your Calming Medical Assistant</p>
+      </header>
+      
+      <div className="main-content-area">
+        
+        {/* Left Side: Scrolling Chat Box */}
+        <div className="chat-box-column">
+          <div className="chat-box">
+            {messages.map((msg, index) => (
+              <div key={index} className={`message ${msg.role}`}>
+                <pre>{msg.content}</pre> 
+              </div>
+            ))}
+            {loading && <div className="message ai loading">Researching...</div>}
+          </div>
         </div>
-        <div>
-          <h1>Get started</h1>
-          <p>
-            Edit <code>src/App.jsx</code> and save to test <code>HMR</code>
-          </p>
+
+        {/* 🔥 Right Side: ANIMATION AREA 🔥 */}
+        <div className="animation-column">
+          {/* Purana placeholder hatakar apna asli component laga diya */}
+          <MedicalAnimation />
         </div>
-        <button
-          className="counter"
-          onClick={() => setCount((count) => count + 1)}
+
+      </div>
+
+      <div className="input-area">
+        <input 
+          type="text" 
+          value={input} 
+          onChange={(e) => setInput(e.target.value)} 
+          placeholder="Ask Asthma or Lung Cancer..."
+          onKeyPress={(e) => e.key === 'Enter' && sendMessage()}
+        />
+        <div 
+          className={`logo-btn ${loading ? 'logo-loading' : ''}`}
+          onClick={sendMessage}
         >
-          Count is {count}
-        </button>
-      </section>
-
-      <div className="ticks"></div>
-
-      <section id="next-steps">
-        <div id="docs">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#documentation-icon"></use>
-          </svg>
-          <h2>Documentation</h2>
-          <p>Your questions, answered</p>
-          <ul>
-            <li>
-              <a href="https://vite.dev/" target="_blank">
-                <img className="logo" src={viteLogo} alt="" />
-                Explore Vite
-              </a>
-            </li>
-            <li>
-              <a href="https://react.dev/" target="_blank">
-                <img className="button-icon" src={reactLogo} alt="" />
-                Learn more
-              </a>
-            </li>
-          </ul>
+          <img src={logo} alt="Curalink Logo" />
         </div>
-        <div id="social">
-          <svg className="icon" role="presentation" aria-hidden="true">
-            <use href="/icons.svg#social-icon"></use>
-          </svg>
-          <h2>Connect with us</h2>
-          <p>Join the Vite community</p>
-          <ul>
-            <li>
-              <a href="https://github.com/vitejs/vite" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#github-icon"></use>
-                </svg>
-                GitHub
-              </a>
-            </li>
-            <li>
-              <a href="https://chat.vite.dev/" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#discord-icon"></use>
-                </svg>
-                Discord
-              </a>
-            </li>
-            <li>
-              <a href="https://x.com/vite_js" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#x-icon"></use>
-                </svg>
-                X.com
-              </a>
-            </li>
-            <li>
-              <a href="https://bsky.app/profile/vite.dev" target="_blank">
-                <svg
-                  className="button-icon"
-                  role="presentation"
-                  aria-hidden="true"
-                >
-                  <use href="/icons.svg#bluesky-icon"></use>
-                </svg>
-                Bluesky
-              </a>
-            </li>
-          </ul>
-        </div>
-      </section>
-
-      <div className="ticks"></div>
-      <section id="spacer"></section>
-    </>
-  )
+      </div>
+    </div>
+  );
 }
 
-export default App
+export default App;
