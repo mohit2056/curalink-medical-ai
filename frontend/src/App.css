@@ -456,3 +456,17 @@ body, html {
   box-shadow: 0 10px 40px rgba(216, 27, 96, 0.2) !important;
   border: 1px solid rgba(255, 255, 255, 0.8) !important;
 }
+/* 🔥 SIDEBAR ANIMATION FIX 🔥 */
+.sidebar-content {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+.sidebar-animation-wrapper {
+  margin-top: auto; /* Ye animation ko hamesha neeche dhakel dega */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding-bottom: 20px;
+  opacity: 0.9;
+}
