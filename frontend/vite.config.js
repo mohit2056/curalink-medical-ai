@@ -8,29 +8,29 @@ export default defineConfig({
     VitePWA({
       registerType: 'autoUpdate',
       injectRegister: 'auto',
+      includeAssets: ['logo.png'], // 🔥 Tera asli logo
       manifest: {
         name: 'Curalink AI Medical Assistant',
         short_name: 'Curalink',
         description: 'Your Calming Medical Assistant',
-        theme_color: '#ffb6c1',
+        theme_color: '#d81b60',
         background_color: '#ffe6ea',
         display: 'standalone',
         icons: [
           {
-            src: '/vite.svg', // Default vite icon use kar rahe hain
+            src: '/logo.png', // 🔥 SVG hata ke PNG kar diya
             sizes: '192x192',
-            type: 'image/svg+xml'
+            type: 'image/png',
+            purpose: 'any maskable'
           },
           {
-            src: '/vite.svg',
+            src: '/logo.png', // 🔥 SVG hata ke PNG kar diya
             sizes: '512x512',
-            type: 'image/svg+xml'
+            type: 'image/png',
+            purpose: 'any maskable'
           }
         ]
       },
-      // 🔥 THE ROOT CAUSE FIX 🔥
-      // Isko false karne se localhost par faltu errors nahi aayengi, 
-      // par Vercel par PWA ekdum perfect banegi!
       devOptions: { 
         enabled: false 
       }
