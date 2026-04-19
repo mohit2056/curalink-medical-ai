@@ -49,3 +49,26 @@ Navigating medical research papers and clinical trials can be incredibly complex
 1. **Clone the repository:**
    ```bash
    git clone [https://github.com/YOUR_GITHUB_USERNAME/curalink-medical-ai.git](https://github.com/YOUR_GITHUB_USERNAME/curalink-medical-ai.git)
+Setup the Backend:
+cd backend
+npm install
+# Create a .env file in the backend directory and add your HUGGINGFACE_API_KEY and MONGO_URI
+npm start
+
+Setup the Frontend:
+
+cd frontend
+npm install --legacy-peer-deps
+npm run dev
+
+👨‍💻 Developed By
+Mohit Full Stack Developer | AI Media Enthusiast
+
+**Next Steps (Very Important):**
+1. Copy-paste this into your `README.md`.
+2. Find `YOUR_GITHUB_USERNAME`, `YOUR_LINKEDIN`, `YOUR_GITHUB`, and `YOUR_CONTRA` in the file and replace them with your actual links.
+3. Commit and push:
+   ```bash
+   git add .
+   git commit -m "Updated README with professional English documentation"
+   git push origin main
