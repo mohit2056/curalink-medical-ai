@@ -45,8 +45,9 @@ function App() {
     setLoading(true);
 
     try {
-      const response = await fetch('http://localhost:5000/api/research/chat', {
-        method: 'POST',
+      const response = await fetch('https://curalink-backend-1q52.onrender.com/api/research/chat', {
+  method: 'POST',
+//... baki code same rahega
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ message: userQuery, history: messages })
       });
