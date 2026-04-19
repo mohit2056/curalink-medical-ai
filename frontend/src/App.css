@@ -446,11 +446,13 @@ body, html {
 @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
 @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
 
-/* 🔥 FORCE PRODUCTION UI FIX 🔥 */
 .app-container {
-  background: rgba(255, 255, 255, 0.85) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important; /* For Safari */
-  box-shadow: 0 10px 40px rgba(216, 27, 96, 0.15) !important;
-  border: 1px solid rgba(255, 255, 255, 0.6) !important;
+  /* ... (teri purani properties jaise width, height yahan rahengi) ... */
+  
+  /* 🔥 UNBREAKABLE GLASSMORPHISM FOR VERCEL 🔥 */
+  background-color: rgba(255, 255, 255, 0.95) !important; /* Isko solid white ke paas kiya hai */
+  backdrop-filter: blur(25px) !important;
+  -webkit-backdrop-filter: blur(25px) !important; /* Safari/iOS ke liye zaroori */
+  box-shadow: 0 10px 40px rgba(216, 27, 96, 0.2) !important;
+  border: 1px solid rgba(255, 255, 255, 0.8) !important;
 }
