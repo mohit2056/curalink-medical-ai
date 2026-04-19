@@ -1,78 +1,99 @@
 const { HfInference } = require('@huggingface/inference');
 const { getClinicalTrials, getOpenAlexData, getPubMedData } = require('./researchController');
 
-// Apni API key use kar rahe hain
 const hf = new HfInference(process.env.HUGGINGFACE_API_KEY);
 
 const generateChatResponse = async (req, res) => {
     try {
         const userQuery = req.body.message;
+        const chatHistory = req.body.history || [];
         if (!userQuery) return res.status(400).json({ success: false, message: "Message is required" });
 
-        console.log(`[CHAT INITIATED] 💬 Processing query: ${userQuery}`);
+        // 1. Keyword Extraction
+        const extractResult = await hf.chatCompletion({
+            model: "meta-llama/Meta-Llama-3-8B-Instruct",
+            messages: [
+                { role: "system", content: "Extract ONLY the main medical condition from the query. No extra words." },
+                { role: "user", content: userQuery }
+            ],
+            max_tokens: 10,
+            temperature: 0.1
+        });
+        let searchKeyword = extractResult.choices[0].message.content.trim().replace(/['"]/g, '');
 
-        // --- STEP 1: TEENO APIs SE DATA LAANA (Simultaneously for speed) ---
-        // Hum mock requests create kar rahe hain taaki humare existing functions kaam karein
-        const mockReq = { query: { query: userQuery, disease: userQuery } };
+        // 2. Fetch Data
+        const mockReq = { query: { query: searchKeyword, disease: searchKeyword } };
         const trialsPromise = new Promise((resolve) => getClinicalTrials(mockReq, { json: resolve, status: () => ({ json: resolve }) }));
         const openAlexPromise = new Promise((resolve) => getOpenAlexData(mockReq, { json: resolve, status: () => ({ json: resolve }) }));
         const pubMedPromise = new Promise((resolve) => getPubMedData(mockReq, { json: resolve, status: () => ({ json: resolve }) }));
 
-        // Sabko ek sath run karo (fastest way)
         const [trialsRes, openAlexRes, pubMedRes] = await Promise.all([trialsPromise, openAlexPromise, pubMedPromise]);
 
-        // --- STEP 2: DATA COMBINE KARNA (Ssirf zaroori information) ---
-        let combinedContext = "Here is the latest medical data fetched from trusted sources:\n\n";
-        
+        // 3. Prepare Context
+        let combinedContext = "Medical data context:\n";
         if (trialsRes.success && trialsRes.data?.length > 0) {
-            combinedContext += `[CLINICAL TRIALS (from ClinicalTrials.gov)]\n`;
-            trialsRes.data.slice(0, 2).forEach(t => combinedContext += `- Title: ${t.title}, Status: ${t.status}\n`);
-            combinedContext += '\n';
+            combinedContext += `[CLINICAL TRIALS]\n`;
+            trialsRes.data.slice(0, 3).forEach(t => combinedContext += `- Title: ${t.title}\n`);
         }
-
         if (pubMedRes.success && pubMedRes.data?.length > 0) {
-            combinedContext += `[RESEARCH PAPERS (from PubMed)]\n`;
-            pubMedRes.data.slice(0, 2).forEach(p => combinedContext += `- Title: ${p.title}\n  Abstract: ${p.abstract.substring(0, 150)}...\n`);
-            combinedContext += '\n';
+            combinedContext += `[RESEARCH PAPERS]\n`;
+            pubMedRes.data.slice(0, 3).forEach(p => combinedContext += `- Title: ${p.title}\n  Abstract: ${p.abstract.substring(0, 150)}...\n`);
         }
 
-        // --- STEP 3: PROMPT ENGINEERING (The Magic Words) ---
-        const systemPrompt = `
-You are Curalink, an advanced Medical Research Assistant. Your goal is to provide accurate, easy-to-understand summaries based ONLY on the provided context.
+        // 4. Prompt
+        const systemPrompt = `You are Curalink. Provide highly structured summaries based ONLY on the context.
+MANDATORY FORMAT:
+### 1. Condition Overview
+### 2. Research Insights
+### 3. Clinical Trials
+### 4. Source Attribution
+CONTEXT:
+${combinedContext}`;
 
-MANDATORY OUTPUT FORMAT:
-You MUST structure your response exactly with these 4 headings:
+        const formattedHistory = chatHistory.map(msg => ({
+            role: msg.role === 'ai' ? 'assistant' : 'user',
+            content: msg.content
+        }));
 
-**1. Condition Overview**
-(A brief, 2-3 sentence summary of the condition requested by the user.)
-
-**2. Research Insights**
-(Summarize the key findings from the Research Papers provided in the context.)
-
-**3. Clinical Trials**
-(Mention the relevant clinical trials and their status from the context.)
-
-**4. Source Attribution**
-(Clearly state that this data comes from PubMed, ClinicalTrials.gov, etc., and advise consulting a doctor).
-
-CONTEXT DATA:
-${combinedContext}
-`;
-
-        // --- STEP 4: HUGGING FACE (LLAMA-3) API CALL ---
-        console.log(`[AI PROCESSING] 🧠 Sending context to Llama-3...`);
         const result = await hf.chatCompletion({
             model: "meta-llama/Meta-Llama-3-8B-Instruct",
             messages: [
                 { role: "system", content: systemPrompt },
-                { role: "user", content: `Please provide information on: ${userQuery}` }
+                ...formattedHistory,
+                { role: "user", content: `Please answer based on the context: ${userQuery}` }
             ],
-            max_tokens: 500,
+            max_tokens: 600,
         });
 
-        const finalAnswer = result.choices[0].message.content;
+        let finalAnswer = result.choices[0].message.content;
 
-        // --- STEP 5: SEND RESPONSE TO FRONTEND ---
+        // 🔥 THE ROOT CAUSE FIX: GUARANTEED LINKS 🔥
+        finalAnswer += "\n\n### 🔗 Direct Reference Links\n";
+        
+        let hasLinks = false;
+        if (pubMedRes.success && pubMedRes.data?.length > 0) {
+            pubMedRes.data.slice(0, 3).forEach(p => {
+                const pubmedUrl = p.url || (p.id ? `https://pubmed.ncbi.nlm.nih.gov/${p.id}/` : `https://pubmed.ncbi.nlm.nih.gov`);
+                finalAnswer += `* **Research Paper:** [${p.title}](${pubmedUrl})\n`;
+                hasLinks = true;
+            });
+        }
+        
+        if (trialsRes.success && trialsRes.data?.length > 0) {
+            trialsRes.data.slice(0, 3).forEach(t => {
+                const trialUrl = t.url || (t.id ? `https://clinicaltrials.gov/study/${t.id}` : `https://clinicaltrials.gov`);
+                finalAnswer += `* **Clinical Trial:** [${t.title}](${trialUrl})\n`;
+                hasLinks = true;
+            });
+        }
+
+        if (!hasLinks) {
+            finalAnswer += "* No direct links available for this query.\n";
+        }
+
+        // Debug log to confirm backend generated links
+        console.log("[DEBUG] Final Answer Length:", finalAnswer.length, "Has Links Added:", hasLinks);
+
         res.json({ success: true, answer: finalAnswer });
 
     } catch (error) {

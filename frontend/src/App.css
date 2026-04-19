@@ -226,3 +226,222 @@ body, html {
   from { box-shadow: 0 0 5px rgba(216, 27, 96, 0.3); transform: scale(0.98); }
   to { box-shadow: 0 0 25px rgba(216, 27, 96, 0.8); transform: scale(1.02); border-color: #d81b60; }
 }
+
+/* Markdown Formatting Styles */
+.message a {
+  color: #d81b60;
+  text-decoration: none;
+  font-weight: bold;
+}
+.message a:hover {
+  text-decoration: underline;
+}
+.message p, .message ul, .message h3 {
+  margin-top: 5px;
+  margin-bottom: 10px;
+}
+
+/* ================= SIDEBAR CSS ================= */
+/* 🔥 THE BEAUTIFUL FLOATING MENU BUTTON 🔥 */
+.global-menu-btn {
+  position: fixed;
+  top: 30px;
+  left: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(216, 27, 96, 0.3);
+  color: #d81b60;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 900; /* Sidebar 1000 pe hai, ye uske niche rahega */
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+
+.global-menu-btn:hover {
+  background: #d81b60;
+  color: white;
+  transform: scale(1.1) rotate(5deg);
+  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.3);
+}
+
+.header-titles {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.sidebar-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.4);
+  backdrop-filter: blur(4px);
+  z-index: 999;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+}
+.sidebar-overlay.show {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.sidebar-container {
+  position: fixed;
+  top: 0; left: -320px; /* Hidden outside screen */
+  width: 300px; height: 100vh;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(25px);
+  box-shadow: 5px 0 25px rgba(216, 27, 96, 0.2);
+  z-index: 1000;
+  transition: left 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+  box-sizing: border-box;
+}
+.sidebar-container.open { left: 0; }
+
+.close-btn {
+  position: absolute;
+  top: 15px; right: 20px;
+  background: none; border: none;
+  font-size: 20px; color: #ad1457;
+  cursor: pointer;
+}
+
+.sidebar-header {
+  display: flex; align-items: center; gap: 10px;
+  margin-top: 10px; margin-bottom: 20px;
+}
+.sidebar-logo { width: 40px; height: 40px; }
+.sidebar-header h2 { margin: 0; color: #d81b60; font-size: 22px;}
+
+.sidebar-content {
+  flex: 1; overflow-y: auto;
+}
+
+.sidebar-section { margin-bottom: 20px; }
+.sidebar-section h3 { font-size: 16px; color: #ad1457; margin-bottom: 10px;}
+
+.history-list { list-style: none; padding: 0; margin: 0; }
+.history-list li {
+  display: flex; justify-content: space-between; align-items: center;
+  background: rgba(255, 255, 255, 0.6);
+  padding: 10px; border-radius: 8px; margin-bottom: 8px;
+  border: 1px solid rgba(216, 27, 96, 0.1);
+}
+.history-text {
+  font-size: 14px; color: #333;
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis;
+  max-width: 80%;
+}
+.delete-history-btn {
+  background: none; border: none; cursor: pointer; font-size: 14px;
+}
+.delete-history-btn:hover { transform: scale(1.1); }
+.empty-text { font-size: 14px; color: #666; font-style: italic; }
+
+.divider { border: 0; height: 1px; background: rgba(216, 27, 96, 0.2); margin: 20px 0; }
+
+.about-text { font-size: 14px; color: #444; line-height: 1.5; margin-bottom: 10px;}
+
+.social-links { display: flex; flex-direction: column; gap: 8px; }
+.social-links a {
+  text-decoration: none; color: white;
+  background: #d81b60; padding: 8px 15px;
+  border-radius: 8px; text-align: center;
+  font-weight: bold; transition: background 0.3s;
+}
+.social-links a:hover { background: #ad1457; }
+
+/* 🔥 RIGHT SIDE ABOUT BUTTON 🔥 */
+.global-about-btn {
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  width: 55px;
+  height: 55px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.6);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(216, 27, 96, 0.3);
+  color: #d81b60;
+  font-size: 26px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  z-index: 900;
+  box-shadow: 0 4px 15px rgba(216, 27, 96, 0.15);
+  transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+}
+.global-about-btn:hover {
+  background: #d81b60;
+  color: white;
+  transform: scale(1.1) rotate(-5deg);
+  box-shadow: 0 6px 20px rgba(216, 27, 96, 0.3);
+}
+
+/* 🔥 ABOUT MODAL CSS 🔥 */
+.modal-overlay {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(8px);
+  display: flex; justify-content: center; align-items: center;
+  z-index: 2000;
+  animation: fadeIn 0.3s ease;
+}
+.modal-container {
+  background: rgba(255, 255, 255, 0.9);
+  width: 90%; max-width: 500px;
+  border-radius: 20px; padding: 30px;
+  position: relative;
+  box-shadow: 0 20px 50px rgba(216, 27, 96, 0.3);
+  border: 1px solid rgba(255, 255, 255, 0.8);
+  animation: slideUp 0.3s ease;
+}
+.modal-header {
+  display: flex; align-items: center; gap: 15px; margin-bottom: 20px;
+  border-bottom: 2px solid rgba(216, 27, 96, 0.1); padding-bottom: 15px;
+}
+.modal-logo { width: 50px; height: 50px; }
+.modal-header h2 { margin: 0; color: #d81b60; }
+.modal-body p { color: #444; line-height: 1.6; }
+.how-to-use { background: rgba(216, 27, 96, 0.05); padding: 15px; border-radius: 10px; margin: 20px 0; border: 1px dashed rgba(216, 27, 96, 0.3);}
+.how-to-use h3 { color: #ad1457; margin-top: 0; margin-bottom: 5px; font-size: 16px;}
+.how-to-use p { margin: 0; font-size: 14px;}
+.social-links-row { display: flex; gap: 15px; margin-top: 15px; justify-content: center;}
+.social-links-row a {
+  text-decoration: none; color: white; background: #d81b60;
+  padding: 10px 20px; border-radius: 25px; font-weight: bold;
+  transition: all 0.3s;
+}
+/* Base style for all buttons */
+.social-links-row { display: flex; gap: 15px; margin-top: 15px; justify-content: center;}
+.social-links-row a {
+  text-decoration: none; color: white;
+  padding: 10px 20px; border-radius: 25px; font-weight: bold;
+  transition: all 0.3s;
+}
+
+/* 🔵 LinkedIn - Official Blue */
+.btn-linkedin { background: #0A66C2; }
+.btn-linkedin:hover { background: #004182; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(10, 102, 194, 0.4); }
+
+/* ⚫ GitHub - Official Black/Dark Gray */
+.btn-github { background: #24292e; }
+.btn-github:hover { background: #000000; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(36, 41, 46, 0.4); }
+
+/* 🔴 Contra - Apna Theme Pink */
+.btn-contra { background: #d81b60; }
+.btn-contra:hover { background: #ad1457; transform: translateY(-3px); box-shadow: 0 5px 15px rgba(216, 27, 96, 0.4); }
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+@keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
