@@ -9,9 +9,7 @@ connectDB();
 
 const app = express();
 app.use(cors({
-    origin: 'http://localhost:5173', // Sirf apne frontend ko allow karo
-    methods: ['POST', 'GET'],       // Kaunsi request use karenge
-    credentials: true
+    origin: ['http://localhost:5173', 'https://curalink-medical-ai-tan.vercel.app']
 }));
 app.use(express.json());
 
