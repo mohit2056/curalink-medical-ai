@@ -6,7 +6,7 @@
 ## 🔗 Quick Links
 - **🌍 Live App:** [Curalink AI on Vercel](https://curalink-medical-ai-tan.vercel.app/)
 - **⚙️ Backend API:** [Deployed on Render](https://curalink-backend-1q52.onrender.com/)
-- **🎥 Demo Video:** [Watch the Pitch](#) *(Insert your Loom/YouTube video link here)*
+- **🎥 Demo Video:** [Watch the Pitch](#) *(https://www.loom.com/share/a2bbe493c9ba4ebea875fc0ea1b9e3b5)*
 
 ---
 
